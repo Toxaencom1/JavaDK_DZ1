@@ -12,7 +12,7 @@ public class Server extends JFrame{
 
     boolean isServerWorking=false;
     JButton btnStart, btnStop;
-    JTextArea jTextArea;
+    JTextArea textArea;
 
     public Server() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,8 +21,8 @@ public class Server extends JFrame{
         setTitle("Chat Server");
         btnStop = new JButton("Stop");
         btnStart = new JButton("Start");
-        jTextArea = new JTextArea();
-        jTextArea.setEditable(false);
+        textArea = new JTextArea();
+        textArea.setEditable(false);
         setResizable(false);
         btnStart.addActionListener(new ActionListener() {
             @Override
@@ -50,12 +50,12 @@ public class Server extends JFrame{
                 }
             }
         });
-        JPanel panBottom = new JPanel(new GridLayout(1, 2));
-        panBottom.add(btnStart);
-        panBottom.add(btnStop);
+        JPanel mainBottom = new JPanel(new GridLayout(1, 2));
+        mainBottom.add(btnStart);
+        mainBottom.add(btnStop);
 
-        add(jTextArea);
-        add(panBottom, BorderLayout.SOUTH);
+        add(textArea);
+        add(mainBottom, BorderLayout.SOUTH);
         setVisible(true);
 
     }

@@ -1,8 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Client extends JFrame {
     private static final int POS_X = 1920;
@@ -15,12 +14,12 @@ public class Client extends JFrame {
     private static final String PASSWORD_2 = "1234";
     private static final String FIELD_LOGIN_DEFAULT = "TaXaH";
     Server server;
-    JTextArea jTextArea;
-    JTextField jTextFieldLogin;
-    JTextField jPasswordField;
+    JTextArea textArea;
+    JTextField textFieldLogin;
+    JTextField passwordField;
     JButton btnLogin;
     boolean isLoginOk = false;
-    String loggedUsername; // Получаем текст из поля ввода
+    String loggedUsername;
 
 
     public Client(Server server) {
@@ -28,84 +27,81 @@ public class Client extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(POS_X - WIDTH, POS_Y, WIDTH, HEIGHT);
         setTitle("Chat Client");
-        jTextArea = new JTextArea();
-        jTextArea.setEditable(false);
+        textArea = new JTextArea();
+        textArea.setEditable(false);
         setResizable(false);
 
-        JPanel panBottom = new JPanel(new GridLayout(1, 1));
-        JPanel panNorth = new JPanel(new GridLayout(1, 1));
-        panNorth.add(loginPassPanel());
-        panBottom.add(sendMessagePanel());
-        add(panNorth, BorderLayout.NORTH);
-        add(jTextArea);
-        add(panBottom, BorderLayout.SOUTH);
+        JPanel mainBottom = new JPanel(new GridLayout(1, 1));
+        JPanel mainNorth = new JPanel(new GridLayout(1, 1));
+        mainNorth.add(loginPassPanel());
+        mainBottom.add(sendMessagePanel());
+        add(mainNorth, BorderLayout.NORTH);
+        add(textArea);
+        add(mainBottom, BorderLayout.SOUTH);
 
         setVisible(true);
     }
 
     private Component loginPassPanel() {
-        JPanel loginPanel = new JPanel(new GridLayout(2, 3));
-        JTextField jTextFieldIP = new JTextField();
-        jTextFieldIP.setText("127.0.0.1");
-        JTextField jTextFieldPort = new JTextField();
-        jTextFieldPort.setText("8080");
-        jTextFieldLogin = new JTextField();
-        jTextFieldLogin.setText(FIELD_LOGIN_DEFAULT);
-        jPasswordField = new JPasswordField();
-        jPasswordField.setText("1234");
+        JPanel panelLogin = new JPanel(new GridLayout(2, 3));
+        JTextField textFieldIP = new JTextField();
+        textFieldIP.setText("127.0.0.1");
+        JTextField textFieldPort = new JTextField();
+        textFieldPort.setText("8080");
+        textFieldLogin = new JTextField();
+        textFieldLogin.setText(FIELD_LOGIN_DEFAULT);
+        passwordField = new JPasswordField();
+        passwordField.setText("1234");
         btnLogin = new JButton("Login");
-        btnLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (server.isServerWorking) {
-                    loggedUsername = jTextFieldLogin.getText(); // Получаем текст из поля ввода
-                    String pass = jPasswordField.getText(); // Получаем текст из поля ввода
-                    if ((loggedUsername.equalsIgnoreCase(LOGIN_1) && pass.equals(PASSWORD_1)
-                            || (loggedUsername.equalsIgnoreCase(LOGIN_2) && pass.equals(PASSWORD_2)))) {
-                        isLoginOk = true;
-                        JOptionPane.showMessageDialog(loginPanel, "You are logged in as: " + loggedUsername);
-                    } else {
-                        isLoginOk = false;
-                        JOptionPane.showMessageDialog(loginPanel, "Login or password do not match, re-login please");
-                    }
+        btnLogin.addActionListener(e -> {
+            if (server.isServerWorking) {
+                loggedUsername = textFieldLogin.getText(); // Получаем текст из поля ввода
+                String pass = passwordField.getText(); // Получаем текст из поля ввода
+                if ((loggedUsername.equalsIgnoreCase(LOGIN_1) && pass.equals(PASSWORD_1)
+                        || (loggedUsername.equalsIgnoreCase(LOGIN_2) && pass.equals(PASSWORD_2)))) {
+                    isLoginOk = true;
+                    JOptionPane.showMessageDialog(panelLogin, "You are logged in as: " + loggedUsername);
                 } else {
-                    JOptionPane.showMessageDialog(loginPanel, "Server not working, contact to system administrator.");
+                    isLoginOk = false;
+                    JOptionPane.showMessageDialog(panelLogin, "Login or password do not match, re-login please");
                 }
+            } else {
+                JOptionPane.showMessageDialog(panelLogin, "Server not working, contact to system administrator.");
             }
         });
 
-        loginPanel.add(jTextFieldIP);
-        loginPanel.add(jTextFieldPort);
-        loginPanel.add(new JLabel());
-        loginPanel.add(jTextFieldLogin);
-        loginPanel.add(jPasswordField);
-        loginPanel.add(btnLogin);
-        return loginPanel;
+        panelLogin.add(textFieldIP);
+        panelLogin.add(textFieldPort);
+        panelLogin.add(new JLabel());
+        panelLogin.add(textFieldLogin);
+        panelLogin.add(passwordField);
+        panelLogin.add(btnLogin);
+        return panelLogin;
     }
 
     private Component sendMessagePanel() {
-        JPanel sendMessage = new JPanel(new GridLayout(1, 2));
-        JButton send = new JButton("Send");
-        JTextField sendTextField = new JTextField();
-        send.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (server.isServerWorking || !isLoginOk) {
-                    String message = sendTextField.getText();
-                    if (isLoginOk) {
-                        jTextArea.append(loggedUsername + ": " + message + "\n");
-                        server.jTextArea.append(LocalDate.now()+" "+loggedUsername + ": " + message + "\n");
-                    } else {
-                        JOptionPane.showMessageDialog(sendMessage, "You are not logged in.");
-                    }
+        JPanel panelSendMessage = new JPanel(new GridLayout(1, 2));
+        JButton btnSend = new JButton("Send");
+        JTextField textFieldSend = new JTextField();
+        btnSend.addActionListener(e -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date currentDate = new Date();
+            String formattedDate = sdf.format(currentDate);
+            if (server.isServerWorking || !isLoginOk) {
+                String message = textFieldSend.getText();
+                if (isLoginOk) {
+                    textArea.append(loggedUsername + ": " + message + "\n");
+                    server.textArea.append(formattedDate+" "+loggedUsername + ": " + message + "\n");
                 } else {
-                    JOptionPane.showMessageDialog(sendMessage, "Server not working, contact to system administrator.");
+                    JOptionPane.showMessageDialog(panelSendMessage, "You are not logged in.");
                 }
+            } else {
+                JOptionPane.showMessageDialog(panelSendMessage, "Server not working, contact to system administrator.");
             }
         });
-        sendMessage.add(sendTextField);
-        sendMessage.add(send);
+        panelSendMessage.add(textFieldSend);
+        panelSendMessage.add(btnSend);
 
-        return sendMessage;
+        return panelSendMessage;
     }
 }
