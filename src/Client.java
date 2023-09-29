@@ -5,7 +5,11 @@ import java.util.Date;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * JFrame, Chat Client window
+ */
 public class Client extends JFrame {
+    //region Static fields
     private static final int POS_X = 1920;
     private static final int POS_Y = 0;
     private static final int WIDTH = 600;
@@ -15,7 +19,8 @@ public class Client extends JFrame {
     private static final String LOGIN_2 = "Test2";
     private static final String PASSWORD_2 = "1234";
     private static final String FIELD_LOGIN_DEFAULT = "Test1";
-
+    //endregion
+    //region Fields
     private final Server server;
     private JTextArea textArea;
     private JTextField textFieldLogin;
@@ -23,8 +28,14 @@ public class Client extends JFrame {
     private JLabel loginName = new JLabel("");
     private boolean isLoginOk = false;
     private String loggedUsername;
+    //endregion
 
-
+    /**
+     * Client constructor, contains two panels(login and send message) and main text area.
+     * Window is resizable with EXIT_ON_CLOSE behavior on default 'x' button.
+     * Also has tree listeners on main buttons and text fields.
+     * @param server client needs server to work.
+     */
     public Client(Server server) {
         this.server = server;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,7 +53,13 @@ public class Client extends JFrame {
         add(mainBottom, BorderLayout.SOUTH);
         setVisible(true);
     }
-
+    //region Private methods
+    /**
+     * Method to add login panel.
+     * Has a login, password, ip and port verifications.
+     * Also has Listener to checks and collect data from server.
+     * @return Component of JFrame
+     */
     private Component loginPassPanel() {
         JPanel panelLogin = new JPanel(new GridLayout(2, 3));
         JTextField textFieldIP = new JTextField();
@@ -74,7 +91,6 @@ public class Client extends JFrame {
                 JOptionPane.showMessageDialog(panelLogin, "Server not working, contact to system administrator.");
             }
         });
-
         panelLogin.add(textFieldIP);
         panelLogin.add(textFieldPort);
         panelLogin.add(loginName);
@@ -84,6 +100,12 @@ public class Client extends JFrame {
         return panelLogin;
     }
 
+    /**
+     *  Method to send message panel.
+     *  Has a text field and buttons.
+     *  Also has two Listeners to send and log messages from users.
+     * @return Component of JFrame
+     */
     private Component sendMessagePanel() {
         JPanel panelSendMessage = new JPanel(new GridLayout(1, 2));
         JButton btnSend = new JButton("Send");
@@ -120,4 +142,5 @@ public class Client extends JFrame {
         panelSendMessage.add(btnSend);
         return panelSendMessage;
     }
+    //endregion
 }

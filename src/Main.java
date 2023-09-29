@@ -13,6 +13,11 @@ P.S. в презентации можно увидеть начало проек
 как соберете свой вариант
 
      */
+
+    /**
+     * Main class to run
+     * @param args args
+     */
     public static void main(String[] args) {
         Server server = new Server();
         new Client(server);
