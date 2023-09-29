@@ -37,6 +37,7 @@ public class Server extends JFrame{
         btnStop = new JButton("Stop");
         btnStart = new JButton("Start");
         textArea = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setEditable(false);
         setResizable(false);
         btnStart.addActionListener(e -> {
@@ -66,7 +67,7 @@ public class Server extends JFrame{
         JPanel mainBottom = new JPanel(new GridLayout(1, 2));
         mainBottom.add(btnStart);
         mainBottom.add(btnStop);
-        add(textArea);
+        add(scrollPane);
         add(mainBottom, BorderLayout.SOUTH);
         setVisible(true);
     }

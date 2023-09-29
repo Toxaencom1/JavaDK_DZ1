@@ -42,6 +42,7 @@ public class Client extends JFrame {
         setBounds(POS_X - WIDTH, POS_Y, WIDTH, HEIGHT);
         setTitle("Chat Client");
         textArea = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(textArea);
         textArea.setEditable(false);
         setResizable(true);
         JPanel mainBottom = new JPanel(new GridLayout(1, 1));
@@ -49,7 +50,7 @@ public class Client extends JFrame {
         mainNorth.add(loginPassPanel());
         mainBottom.add(sendMessagePanel());
         add(mainNorth, BorderLayout.NORTH);
-        add(textArea);
+        add(scrollPane);
         add(mainBottom, BorderLayout.SOUTH);
         setVisible(true);
     }
