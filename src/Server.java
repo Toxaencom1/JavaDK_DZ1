@@ -24,30 +24,24 @@ public class Server extends JFrame{
         textArea = new JTextArea();
         textArea.setEditable(false);
         setResizable(false);
-        btnStart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isServerWorking) {
-                    isServerWorking=true;
+        btnStart.addActionListener(e -> {
+            if (!isServerWorking) {
+                isServerWorking=true;
 //                    JOptionPane.showMessageDialog(btnStart, "Server Start");
-                    System.out.println("Server Start");
-                } else {
-                    JOptionPane.showMessageDialog(btnStart, "Server already started");
-                    System.out.println("Server already started");
-                }
+                System.out.println("Server Start");
+            } else {
+                JOptionPane.showMessageDialog(btnStart, "Server already started");
+                System.out.println("Server already started");
             }
         });
-        btnStop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (isServerWorking) {
-                    isServerWorking=false;
-                    JOptionPane.showMessageDialog(btnStop, "Server Stop");
-                    System.out.println("Server Stopped");
-                } else {
-                    JOptionPane.showMessageDialog(btnStop, "Server not running");
-                    System.out.println("Server not running");
-                }
+        btnStop.addActionListener(e -> {
+            if (isServerWorking) {
+                isServerWorking=false;
+                JOptionPane.showMessageDialog(btnStop, "Server Stop");
+                System.out.println("Server Stopped");
+            } else {
+                JOptionPane.showMessageDialog(btnStop, "Server not running");
+                System.out.println("Server not running");
             }
         });
         JPanel mainBottom = new JPanel(new GridLayout(1, 2));
